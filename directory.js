@@ -115,6 +115,8 @@ app.get("/guestbook", function (req, res) {
     </html>
   `;
 
+console.log(data)
+  
   // Send the response with the full HTML including Bootstrap
   res.status(200).send(results);
 });
