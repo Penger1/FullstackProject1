@@ -65,61 +65,70 @@ app.post("/ajaxmessage", function (req, res) {
 
 
 app.get("/guestbook", function (req, res) {
-  var data = require("./guestbook.json");
- //Bootstrap section
-  var results = `
-    <html>
-    <head>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-      <title>Guestbook</title>
-    </head>
-    <body>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-10">
-            <h2 class="text-center my-4">Guestbook Entries</h2>
-            <div class="text-center mb-4">
-              <a href="https://fullstackproject1-fjt7.onrender.com/" class="btn btn-primary">Go to Homepage</a>
-            </div>
-            <table class="table table-bordered table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Country</th>
-                  <th>Message</th>
-                </tr>
-              </thead>
-              <tbody>
-  `;
+  fs.readFile('./guestbook.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Error reading guestbook file.");
+    }
 
-  //Generate table
-  for (var i = 0; i < data.length; i++) {
-    results += `
-      <tr>
-        <td>${data[i].id}</td>
-        <td>${data[i].name}</td>
-        <td>${data[i].country}</td>
-        <td>${data[i].message}</td>
-      </tr>
+    var guestbook = JSON.parse(data);
+
+    //Bootstrap section
+    var results = `
+      <html>
+      <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <title>Guestbook</title>
+      </head>
+      <body>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-10">
+              <h2 class="text-center my-4">Guestbook Entries</h2>
+              <div class="text-center mb-4">
+                <a href="http://localhost:8081/" class="btn btn-primary">Go to Homepage</a>
+              </div>
+              <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody>
     `;
-  }
 
-  results += `
-              </tbody>
-            </table>
+    //Generate table
+    for (var i = 0; i < guestbook.length; i++) {
+      results += `
+        <tr>
+          <td>${guestbook[i].id}</td>
+          <td>${guestbook[i].name}</td>
+          <td>${guestbook[i].country}</td>
+          <td>${guestbook[i].message}</td>
+        </tr>
+      `;
+    }
+
+    results += `
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    </body>
-    </html>
-  `;
+      </body>
+      </html>
+    `;
 
-console.log(data)
-  
-  // Send the response with the full HTML including Bootstrap
-  res.status(200).send(results);
+    console.log(guestbook);  // This will now show the latest data
+
+    // Send the response with the full HTML including Bootstrap
+    res.status(200).send(results);
+  });
 });
+
 
 
 app.listen(8081, function () {
