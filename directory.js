@@ -79,7 +79,7 @@ app.get("/guestbook", function (req, res) {
           <div class="col-md-10">
             <h2 class="text-center my-4">Guestbook Entries</h2>
             <div class="text-center mb-4">
-              <a href="http://localhost:8081/" class="btn btn-primary">Go to Homepage</a>
+              <a href="https://fullstackproject1-fjt7.onrender.com/" class="btn btn-primary">Go to Homepage</a>
             </div>
             <table class="table table-bordered table-striped">
               <thead class="thead-dark">
